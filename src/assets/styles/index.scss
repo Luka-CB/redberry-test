@@ -1,0 +1,28 @@
+@import url("https://free.bboxtype.com/embedfonts/?family=FiraGO:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i");
+@import "./components/Navigation", "./components/Home";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f3f2fa;
+  font-family: "FiraGO", sans-serif;
+}
+
+button {
+  border: none;
+  outline: none;
+  background-color: #5d37f3;
+  color: #fff;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #562cff;
+  }
+}

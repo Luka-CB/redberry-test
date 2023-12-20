@@ -1,0 +1,22 @@
+.navigation {
+  background-color: #fff;
+  height: 80px;
+  border-bottom: 1px solid #e4e3eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 78px;
+
+  .logo {
+    img {
+      width: 150px;
+    }
+  }
+
+  .auth {
+    .auth-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+  }
+}
