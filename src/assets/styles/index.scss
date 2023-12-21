@@ -1,5 +1,5 @@
 @import url("https://free.bboxtype.com/embedfonts/?family=FiraGO:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i");
-@import "./components/Navigation", "./components/Home";
+@import "./components/Navigation", "./components/Home", "./components/AddBlog";
 
 * {
   margin: 0;
@@ -23,6 +23,6 @@ button {
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    background-color: #562cff;
+    background-color: #512be7;
   }
 }

@@ -1,4 +1,5 @@
-.navigation {
+.navigation,
+.add-blog-nav {
   background-color: #fff;
   height: 80px;
   border-bottom: 1px solid #e4e3eb;
@@ -19,4 +20,8 @@
       border-radius: 8px;
     }
   }
+}
+
+.add-blog-nav {
+  justify-content: center;
 }

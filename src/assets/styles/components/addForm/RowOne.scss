@@ -1,0 +1,23 @@
+.row1 {
+  display: flex;
+  justify-content: space-between;
+
+  .input-box {
+    width: 288px;
+    display: flex;
+    flex-direction: column;
+
+    ul {
+      font-size: 12px;
+      margin-left: 15px;
+      margin-top: 8px;
+      color: #85858d;
+    }
+
+    .validation {
+      margin-top: 8px;
+      color: #85858d;
+      font-size: 12px;
+    }
+  }
+}

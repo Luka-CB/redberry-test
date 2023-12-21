@@ -1,0 +1,36 @@
+.add-blog-container {
+  width: 100%;
+  position: relative;
+
+  .back-btn {
+    background-color: #e4e3eb;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 5%;
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      background-color: #dddddd;
+    }
+  }
+
+  .add-form-wrapper {
+    width: 600px;
+    margin: 0 auto;
+    margin-top: 40px;
+
+    .title {
+      color: #1a1a1f;
+      font-size: 32px;
+
+      font-weight: 700;
+    }
+
+    @import "./addForm/Form";
+  }
+}

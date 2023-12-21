@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "../utils/axios";
 
-interface catIFace {
+export interface catIFace {
   id: number;
   title: string;
   text_color: string;
@@ -10,11 +10,19 @@ interface catIFace {
 
 interface stateIFace {
   categories: catIFace[];
+  isCategoryDropdownActive: boolean;
+  pickedCategories: catIFace[];
 }
+
+const pickedCategoriesFromStorage = localStorage.getItem("pickedCategories")
+  ? JSON.parse(localStorage.getItem("pickedCategories") || "")
+  : [];
 
 export const useCategories = defineStore("categories", {
   state: (): stateIFace => ({
     categories: [],
+    isCategoryDropdownActive: false,
+    pickedCategories: pickedCategoriesFromStorage,
   }),
   actions: {
     async getCategories() {
@@ -26,6 +34,33 @@ export const useCategories = defineStore("categories", {
       } catch (error) {
         console.log(error);
       }
+    },
+    toggleCategoryDropdown(value?: boolean) {
+      if (value === false) {
+        this.isCategoryDropdownActive = value;
+      } else {
+        this.isCategoryDropdownActive = !this.isCategoryDropdownActive;
+      }
+    },
+    setPickedCategories(category: catIFace) {
+      if (this.pickedCategories.some((pc) => pc.id === category.id)) {
+        return;
+      }
+
+      this.pickedCategories.push(category);
+      localStorage.setItem(
+        "pickedCategories",
+        JSON.stringify(this.pickedCategories)
+      );
+    },
+    removePickedCategory(catId: number) {
+      this.pickedCategories = this.pickedCategories.filter(
+        (pkdCat) => pkdCat.id !== catId
+      );
+      localStorage.setItem(
+        "pickedCategories",
+        JSON.stringify(this.pickedCategories)
+      );
     },
   },
 });
