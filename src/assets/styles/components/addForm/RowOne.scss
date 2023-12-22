@@ -7,6 +7,16 @@
     display: flex;
     flex-direction: column;
 
+    .inputError {
+      border: 1px solid #ea1919;
+      background-color: #faf2f3;
+    }
+
+    .inputSuccess {
+      border: 1px solid #14d81c;
+      background-color: #f8fff8;
+    }
+
     ul {
       font-size: 12px;
       margin-left: 15px;
@@ -18,6 +28,18 @@
       margin-top: 8px;
       color: #85858d;
       font-size: 12px;
+    }
+
+    .error {
+      color: #ea1919;
+    }
+
+    .success {
+      color: #14d81c;
+    }
+
+    .none {
+      color: #85858d;
     }
   }
 }

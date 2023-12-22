@@ -2,11 +2,26 @@
   <div class="row3">
     <div class="input-box">
       <label for="date">გამოყენების თარიღი *</label>
-      <input type="date" />
+      <input
+        type="date"
+        v-model="date"
+        :class="{
+          inputError: values.date.error,
+          inputSuccess: values.date.success,
+        }"
+      />
     </div>
     <div class="category-wrapper" @click.stop>
       <label>კატეგორია *</label>
-      <div class="category-input">
+      <div
+        :class="[
+          values.categories.error
+            ? 'inputError'
+            : values.categories.success
+            ? 'inputSuccess'
+            : 'category-input',
+        ]"
+      >
         <div class="picked-categories" v-if="pickedCategories.length > 0">
           <div
             class="category"
@@ -46,10 +61,34 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watchEffect } from "vue";
 import { storeToRefs } from "pinia";
 import { catIFace, useCategories } from "../../store/categories";
 import ChevronDownIcon from "../svgs/ChevronDownIcon.vue";
 import CloseIconLight from "../svgs/CloseIconLight.vue";
+import { useForm } from "../../store/form";
+
+const formStore = useForm();
+const { values } = storeToRefs(formStore);
+const { setDate, setCategories } = formStore;
+
+const date = ref(values.value.date.value || "");
+
+watchEffect(() => {
+  if (date.value) {
+    setDate({
+      value: date.value,
+      error: false,
+      success: true,
+    });
+  } else {
+    setDate({
+      value: date.value,
+      error: false,
+      success: false,
+    });
+  }
+});
 
 const categoryStore = useCategories();
 const { categories, isCategoryDropdownActive, pickedCategories } =
@@ -73,4 +112,21 @@ const handlePickCategory = (cat: catIFace) => {
 const handleRemovePickedCategory = (catId: number) => {
   removePickedCategory(catId);
 };
+
+watchEffect(() => {
+  if (pickedCategories.value.length > 0) {
+    const catIds = pickedCategories.value.map((cat) => cat.id);
+    setCategories({
+      value: catIds,
+      error: false,
+      success: true,
+    });
+  } else {
+    setCategories({
+      value: [],
+      error: false,
+      success: false,
+    });
+  }
+});
 </script>

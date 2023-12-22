@@ -5,5 +5,27 @@
     width: 288px;
     display: flex;
     flex-direction: column;
+
+    .inputError {
+      border: 1px solid #ea1919;
+      background-color: #faf2f3;
+    }
+
+    .inputSuccess {
+      border: 1px solid #14d81c;
+      background-color: #f8fff8;
+    }
+
+    .err-msg {
+      display: flex;
+      margin-top: 8px;
+
+      p {
+        color: #ea1919;
+        font-size: 12px;
+        font-weight: 400;
+        margin-left: 5px;
+      }
+    }
   }
 }

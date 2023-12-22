@@ -8,10 +8,53 @@
         cols="30"
         rows="10"
         placeholder="შეიყვანეთ აღწერა"
+        v-model="description"
+        :class="{
+          inputError: values.description.error,
+          inputSuccess: values.description.success,
+        }"
       ></textarea>
-      <span class="validation">მინიმუმ ორი სიმბოლო</span>
+      <span
+        class="validation"
+        :class="{
+          error: values.description.error,
+          success: values.description.success,
+          none: values.description.success,
+        }"
+        >მინიმუმ 4 სიმბოლო</span
+      >
     </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, watchEffect } from "vue";
+import { useForm } from "../../store/form";
+import { storeToRefs } from "pinia";
+
+const formStore = useForm();
+const { values } = storeToRefs(formStore);
+const { setDescription } = formStore;
+
+const description = ref(values.value.description.value || "");
+const descError = ref(false);
+const descSuccess = ref(false);
+
+watchEffect(() => {
+  if (description.value && description.value.length < 4) {
+    descError.value = true;
+  }
+
+  if (description.value && description.value.length >= 4) {
+    descSuccess.value = true;
+  } else {
+    descSuccess.value = false;
+  }
+
+  setDescription({
+    value: description.value,
+    error: descError.value,
+    success: descSuccess.value,
+  });
+});
+</script>

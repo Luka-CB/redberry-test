@@ -36,6 +36,11 @@
         font-size: 14px;
         font-weight: 400;
       }
+
+      &:focus {
+        border: 1.5px solid #5d37f3;
+        background-color: #f7f7ff;
+      }
     }
 
     @import "./RowOne";
@@ -56,6 +61,12 @@
         width: 288px;
         padding: 10px 20px;
         border-radius: 8px;
+
+        &:disabled {
+          background-color: #e4e3eb;
+          color: #fff;
+          cursor: default;
+        }
       }
     }
   }
