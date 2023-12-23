@@ -46,6 +46,8 @@ watchEffect(() => {
 watchEffect(() => {
   if (email.value && !emailRule.test(email.value)) {
     emailError.value = "მეილი უნდა მთავრდებოდეს @redberry.ge-ით";
+  } else {
+    emailError.value = "";
   }
 
   if (email.value && emailRule.test(email.value)) {

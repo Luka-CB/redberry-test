@@ -19,7 +19,6 @@
         :class="{
           error: values.description.error,
           success: values.description.success,
-          none: values.description.success,
         }"
         >მინიმუმ 4 სიმბოლო</span
       >
@@ -48,12 +47,16 @@ watchEffect(() => {
   }
 });
 
+const minFourSymbols = /^\S.{3,}$/;
+
 watchEffect(() => {
-  if (description.value && description.value.length < 4) {
+  if (description.value && !minFourSymbols.test(description.value)) {
     descError.value = true;
+  } else {
+    descError.value = false;
   }
 
-  if (description.value && description.value.length >= 4) {
+  if (description.value && minFourSymbols.test(description.value)) {
     descSuccess.value = true;
   } else {
     descSuccess.value = false;

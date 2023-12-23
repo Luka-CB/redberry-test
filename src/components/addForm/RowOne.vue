@@ -24,10 +24,6 @@
           :class="{
             error: values.author.errors.errOne,
             success: values.author.success.succOne,
-            none:
-              values.author.success.succOne &&
-              values.author.success.succTwo &&
-              values.author.success.succThree,
           }"
         >
           მინიმუმ 4 სიმბოლო
@@ -36,10 +32,6 @@
           :class="{
             error: values.author.errors.errTwo,
             success: values.author.success.succTwo,
-            none:
-              values.author.success.succOne &&
-              values.author.success.succTwo &&
-              values.author.success.succThree,
           }"
         >
           მინიმუმ ორი სიტყვა
@@ -48,10 +40,6 @@
           :class="{
             error: values.author.errors.errThree,
             success: values.author.success.succThree,
-            none:
-              values.author.success.succOne &&
-              values.author.success.succTwo &&
-              values.author.success.succThree,
           }"
         >
           მხოლოდ ქართული სიმბოლოები
@@ -76,7 +64,6 @@
         :class="{
           error: values.title.error,
           success: values.title.success,
-          none: values.title.success,
         }"
         >მინიმუმ 4 სიმბოლო</span
       >
@@ -103,8 +90,9 @@ const title = ref(values.value.title.value || "");
 const titleError = ref(false);
 const titleSuccess = ref(false);
 
-const minTwoWords = /^\S+(\s+\S+){1,}$/;
-const onlyGeoLetters = /^[ა-ჰ\s]+$/;
+const minFourSymbols = /^\S.{3,}$/;
+const minTwoWords = /^\S+(\s+\S+)+$/;
+const onlyGeoLetters = /^(?!\s)[ა-ჰ\s]+$/;
 
 watchEffect(() => {
   if (props.success) {
@@ -114,11 +102,13 @@ watchEffect(() => {
 });
 
 watchEffect(() => {
-  if (author.value && author.value.length < 4) {
+  if (author.value && !minFourSymbols.test(author.value)) {
     authorError.value.errOne = true;
+  } else {
+    authorError.value.errOne = false;
   }
 
-  if (author.value && author.value.length >= 4) {
+  if (author.value && minFourSymbols.test(author.value)) {
     authorSuccess.value.succOne = true;
   } else {
     authorSuccess.value.succOne = false;
@@ -126,6 +116,8 @@ watchEffect(() => {
 
   if (author.value && !minTwoWords.test(author.value)) {
     authorError.value.errTwo = true;
+  } else {
+    authorError.value.errTwo = false;
   }
 
   if (author.value && minTwoWords.test(author.value)) {
@@ -136,6 +128,8 @@ watchEffect(() => {
 
   if (author.value && !onlyGeoLetters.test(author.value)) {
     authorError.value.errThree = true;
+  } else {
+    authorError.value.errThree = false;
   }
 
   if (author.value && onlyGeoLetters.test(author.value)) {
@@ -152,11 +146,13 @@ watchEffect(() => {
 });
 
 watchEffect(() => {
-  if (title.value && title.value.length < 4) {
+  if (title.value && !minFourSymbols.test(title.value)) {
     titleError.value = true;
+  } else {
+    titleError.value = false;
   }
 
-  if (title.value && title.value.length >= 4) {
+  if (title.value && minFourSymbols.test(title.value)) {
     titleSuccess.value = true;
   } else {
     titleSuccess.value = false;
