@@ -32,6 +32,8 @@ import { ref, watchEffect } from "vue";
 import { useForm } from "../../store/form";
 import { storeToRefs } from "pinia";
 
+const props = defineProps(["success"]);
+
 const formStore = useForm();
 const { values } = storeToRefs(formStore);
 const { setDescription } = formStore;
@@ -39,6 +41,12 @@ const { setDescription } = formStore;
 const description = ref(values.value.description.value || "");
 const descError = ref(false);
 const descSuccess = ref(false);
+
+watchEffect(() => {
+  if (props.success) {
+    description.value = "";
+  }
+});
 
 watchEffect(() => {
   if (description.value && description.value.length < 4) {

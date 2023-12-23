@@ -89,6 +89,8 @@ import { ref, watchEffect } from "vue";
 import { useForm } from "../../store/form";
 import { storeToRefs } from "pinia";
 
+const props = defineProps(["success"]);
+
 const formStore = useForm();
 const { values } = storeToRefs(formStore);
 const { setAuthor, setTitle } = formStore;
@@ -103,6 +105,13 @@ const titleSuccess = ref(false);
 
 const minTwoWords = /^\S+(\s+\S+){1,}$/;
 const onlyGeoLetters = /^[ა-ჰ\s]+$/;
+
+watchEffect(() => {
+  if (props.success) {
+    author.value = "";
+    title.value = "";
+  }
+});
 
 watchEffect(() => {
   if (author.value && author.value.length < 4) {

@@ -1,12 +1,8 @@
 import { defineStore } from "pinia";
 
 interface imageFileIFace {
-  lastModified?: number;
-  lastModifiedDate?: any;
   name?: string;
-  size?: number;
-  type?: string;
-  webkitrelativePath?: string;
+  image?: string;
 }
 
 interface authorIFace {
@@ -55,6 +51,7 @@ interface emailIFace {
 
 interface stateIFace {
   imageFile: imageFileIFace;
+  imageError: boolean;
   values: {
     author: authorIFace;
     title: titleIFace;
@@ -106,23 +103,22 @@ const values = {
   },
 };
 
-const imageFileFromStorage = localStorage.getItem("imageFile")
-  ? JSON.parse(localStorage.getItem("imageFile") || "")
-  : {};
-
 const formValuesFromStorage = localStorage.getItem("values")
   ? JSON.parse(localStorage.getItem("values") || "")
   : values;
 
 export const useForm = defineStore("form", {
   state: (): stateIFace => ({
-    imageFile: imageFileFromStorage as imageFileIFace,
+    imageFile: {},
+    imageError: false,
     values: formValuesFromStorage,
   }),
   actions: {
     setImageFile(file: imageFileIFace) {
       this.imageFile = file;
-      localStorage.setItem("imageFile", JSON.stringify(this.imageFile));
+    },
+    toggleImageError(value: boolean) {
+      this.imageError = value;
     },
     removeImageFile() {
       this.imageFile = {};
@@ -172,6 +168,12 @@ export const useForm = defineStore("form", {
       this.values.email.success = vals.success;
 
       localStorage.setItem("values", JSON.stringify(this.values));
+    },
+
+    resetForm() {
+      this.values = values;
+      this.imageFile = {};
+      localStorage.removeItem("values");
     },
   },
 });

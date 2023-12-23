@@ -25,6 +25,8 @@ import { useForm } from "../../store/form";
 import { storeToRefs } from "pinia";
 import ErrorIcon from "../svgs/errorIcon.vue";
 
+const props = defineProps(["success"]);
+
 const formStore = useForm();
 const { values } = storeToRefs(formStore);
 const { setEmail } = formStore;
@@ -34,6 +36,12 @@ const emailError = ref("");
 const emailSuccess = ref(false);
 
 const emailRule = /.+@(redberry)\.ge$/;
+
+watchEffect(() => {
+  if (props.success) {
+    email.value = "";
+  }
+});
 
 watchEffect(() => {
   if (email.value && !emailRule.test(email.value)) {

@@ -12,7 +12,13 @@
     @dragleave.prevent="toggleDropZone"
     @dragover.prevent
     @drop.prevent="handleDrop"
-    :class="[isDropZoneActive ? 'drop-area-active' : 'drop-area']"
+    :class="[
+      isDropZoneActive
+        ? 'drop-area-active'
+        : imageError
+        ? 'drop-area-error'
+        : 'drop-area',
+    ]"
   >
     <ChooseImgIcon />
     <div class="text">
@@ -40,22 +46,43 @@ import { storeToRefs } from "pinia";
 const isDropZoneActive = ref(false);
 
 const formStore = useForm();
-const { imageFile } = storeToRefs(formStore);
-const { setImageFile, removeImageFile } = formStore;
+const { imageFile, imageError } = storeToRefs(formStore);
+const { setImageFile, removeImageFile, toggleImageError } = formStore;
 
 const toggleDropZone = () => {
   isDropZoneActive.value = !isDropZoneActive.value;
 };
 
 const handleDrop = (e: any) => {
-  setImageFile(e.dataTransfer.files[0]);
+  const file = e.dataTransfer.files[0];
+  const reader = new FileReader();
+
+  reader.onloadend = () => {
+    setImageFile({
+      name: file.name,
+      image: reader.result as string,
+    });
+    toggleImageError(false);
+  };
+
+  reader.readAsDataURL(file);
 };
 
 const handleInputFile = ($event: Event) => {
   const target = $event.target as HTMLInputElement;
   if (target && target.files) {
-    imageFile.value = target.files[0];
-    setImageFile(target.files[0]);
+    const file = target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setImageFile({
+        name: file.name,
+        image: reader.result as string,
+      });
+      toggleImageError(false);
+    };
+
+    reader.readAsArrayBuffer(file);
   }
 };
 

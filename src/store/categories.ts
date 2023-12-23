@@ -62,5 +62,9 @@ export const useCategories = defineStore("categories", {
         JSON.stringify(this.pickedCategories)
       );
     },
+    resetPickedCategories() {
+      this.pickedCategories = [];
+      localStorage.removeItem("pickedCategories");
+    },
   },
 });

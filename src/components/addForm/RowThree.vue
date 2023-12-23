@@ -68,11 +68,19 @@ import ChevronDownIcon from "../svgs/ChevronDownIcon.vue";
 import CloseIconLight from "../svgs/CloseIconLight.vue";
 import { useForm } from "../../store/form";
 
+const props = defineProps(["success"]);
+
 const formStore = useForm();
 const { values } = storeToRefs(formStore);
 const { setDate, setCategories } = formStore;
 
 const date = ref(values.value.date.value || "");
+
+watchEffect(() => {
+  if (props.success) {
+    date.value = "";
+  }
+});
 
 watchEffect(() => {
   if (date.value) {
