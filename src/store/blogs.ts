@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "../utils/axios";
+import { catIFace } from "./categories";
 
 interface blogIFace {
   title: string;
@@ -11,14 +12,39 @@ interface blogIFace {
   email: string;
 }
 
-const token =
-  "ce8cdaf18bf0ca4a945dba410b3ceac0128df681563c04446f0915537ee7fcab";
+export interface getBlogIFace {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  publish_date: string;
+  categories: catIFace[];
+  author: string;
+}
+
+interface stateIFace {
+  isSuccessModalActive: boolean;
+  isPostBlogLoading: boolean;
+  isPostBlogSuccess: boolean;
+  isGetBlogsLoading: boolean;
+  blogs: getBlogIFace[];
+  categoryIdsForFilter: number[];
+  filteredBlogs: getBlogIFace[];
+}
+
+const categoryFilterIdsFromStorage = localStorage.getItem("categoryFilterIds")
+  ? JSON.parse(localStorage.getItem("categoryFilterIds") || "")
+  : [];
 
 export const useBlogs = defineStore("blogs", {
-  state: () => ({
+  state: (): stateIFace => ({
     isSuccessModalActive: false,
     isPostBlogLoading: false,
     isPostBlogSuccess: false,
+    isGetBlogsLoading: false,
+    blogs: [],
+    categoryIdsForFilter: categoryFilterIdsFromStorage,
+    filteredBlogs: [],
   }),
   actions: {
     toggleSuccessModal(value: boolean) {
@@ -31,7 +57,6 @@ export const useBlogs = defineStore("blogs", {
         const { status } = await axios.post("/blogs", blog, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -43,6 +68,59 @@ export const useBlogs = defineStore("blogs", {
         this.isPostBlogLoading = false;
         console.log(error);
       }
+    },
+
+    async getBlogs() {
+      this.isGetBlogsLoading = true;
+
+      try {
+        const { data } = await axios.get("/blogs");
+
+        if (data) {
+          this.isGetBlogsLoading = false;
+          this.blogs = data.data;
+        }
+      } catch (error) {
+        this.isGetBlogsLoading = false;
+        console.log(error);
+      }
+    },
+
+    filterBlogs(idsForFilter: number[]) {
+      return this.blogs.filter((blog) => {
+        return blog.categories.some((cat) => idsForFilter.includes(cat.id));
+      });
+    },
+
+    setCategoryIdsForFilter(catId: number) {
+      if (this.categoryIdsForFilter.some((id) => id === catId)) {
+        this.categoryIdsForFilter = this.categoryIdsForFilter.filter(
+          (id) => id !== catId
+        );
+        this.filteredBlogs = this.filterBlogs(this.categoryIdsForFilter);
+        localStorage.setItem(
+          "categoryFilterIds",
+          JSON.stringify(this.categoryIdsForFilter)
+        );
+        return;
+      }
+
+      this.categoryIdsForFilter.push(catId);
+      this.filteredBlogs = this.filterBlogs(this.categoryIdsForFilter);
+      localStorage.setItem(
+        "categoryFilterIds",
+        JSON.stringify(this.categoryIdsForFilter)
+      );
+    },
+
+    setCategoryIdsForFilterWithUrlVal(catIds: number[]) {
+      this.categoryIdsForFilter = catIds;
+      this.filteredBlogs = this.filterBlogs(this.categoryIdsForFilter);
+    },
+
+    removeFilter() {
+      this.categoryIdsForFilter = [];
+      localStorage.removeItem("categoryFilterIds");
     },
 
     resetPostBlog() {

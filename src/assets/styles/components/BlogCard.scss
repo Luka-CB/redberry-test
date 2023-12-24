@@ -34,25 +34,16 @@
 
   .card-categories {
     margin-top: 16px;
+    display: flex;
+    align-items: center;
 
     .category {
-      color: #ffffff;
       font-size: 12px;
       padding: 6px 10px;
       border-radius: 30px;
 
       &:not(:first-child) {
         margin-left: 10px;
-      }
-
-      &:nth-child(1) {
-        background-color: #d6961c;
-      }
-      &:nth-child(2) {
-        background-color: #15c972;
-      }
-      &:nth-child(3) {
-        background-color: #b71fdd;
       }
     }
   }

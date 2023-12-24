@@ -1,20 +1,25 @@
 <template>
   <div class="card">
     <div class="image">
-      <img :src="DummyImg" alt="sdsd" />
+      <img :src="blog.image" :alt="blog.title" />
     </div>
-    <h4 class="author">ვიღაც სახელისშვილი</h4>
-    <span class="date">02.11.2023</span>
-    <h2 class="title">EOMM-ის მრჩეველთა საბჭოს ნინო ეგაძე შეუერთდა</h2>
+    <h4 class="author">{{ blog.author }}</h4>
+    <span class="date">{{ blog.publish_date }}</span>
+    <h2 class="title">{{ blog.title }}</h2>
     <div class="card-categories">
-      <span class="category">მარკეტი</span>
-      <span class="category">აპლიკაცია</span>
-      <span class="category">ხელოვნური ინტელექტი</span>
+      <div
+        class="category"
+        v-for="category in blog.categories.slice(0, 3)"
+        :key="category.id"
+        :style="{
+          backgroundColor: category.background_color,
+          color: category.text_color,
+        }"
+      >
+        {{ category.title }}
+      </div>
     </div>
-    <p class="description">
-      6 თვის შემდეგ ყველის ბრმა დეგუსტაციის დროც დადგა. მაქსიმალური
-      სიზუსტისთვის, ეს პროცესი...
-    </p>
+    <p class="description">{{ blog.description }}</p>
     <div class="link">
       <router-link :to="{ name: 'home' }">სრულად ნახვა</router-link>
       <ArrowIcon />
@@ -23,6 +28,8 @@
 </template>
 
 <script setup lang="ts">
-import DummyImg from "../assets/images/dummy.jpg";
 import ArrowIcon from "../components/svgs/ArrowIcon.vue";
+import { getBlogIFace } from "../store/blogs";
+
+const { blog } = defineProps<{ blog: getBlogIFace }>();
 </script>

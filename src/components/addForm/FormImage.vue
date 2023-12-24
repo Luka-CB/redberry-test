@@ -65,7 +65,7 @@ const handleDrop = (e: any) => {
     toggleImageError(false);
   };
 
-  reader.readAsDataURL(file);
+  reader.readAsArrayBuffer(file);
 };
 
 const handleInputFile = ($event: Event) => {
