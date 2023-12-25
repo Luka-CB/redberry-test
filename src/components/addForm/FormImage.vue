@@ -13,10 +13,10 @@
     @dragover.prevent
     @drop.prevent="handleDrop"
     :class="[
-      isDropZoneActive
-        ? 'drop-area-active'
-        : imageError
+      errMsg
         ? 'drop-area-error'
+        : isDropZoneActive
+        ? 'drop-area-active'
         : 'drop-area',
     ]"
   >
@@ -32,6 +32,7 @@
         @change="handleInputFile($event)"
       />
     </div>
+    <p class="err-msg" v-if="errMsg">{{ errMsg }}</p>
   </div>
 </template>
 
@@ -39,15 +40,16 @@
 import ChooseImgIcon from "../svgs/ChooseImgIcon.vue";
 import CloseIcon from "../svgs/CloseIcon.vue";
 import ChosenImgIcon from "../svgs/ChosenImgIcon.vue";
-import { ref } from "vue";
+import { ref, watchEffect } from "vue";
 import { useForm } from "../../store/form";
 import { storeToRefs } from "pinia";
 
 const isDropZoneActive = ref(false);
+const errMsg = ref("");
 
 const formStore = useForm();
-const { imageFile, imageError } = storeToRefs(formStore);
-const { setImageFile, removeImageFile, toggleImageError } = formStore;
+const { imageFile } = storeToRefs(formStore);
+const { setImageFile, removeImageFile } = formStore;
 
 const toggleDropZone = () => {
   isDropZoneActive.value = !isDropZoneActive.value;
@@ -58,14 +60,17 @@ const handleDrop = (e: any) => {
   const reader = new FileReader();
 
   reader.onloadend = () => {
-    setImageFile({
-      name: file.name,
-      image: reader.result as string,
-    });
-    toggleImageError(false);
+    if (file.type.startsWith("image/")) {
+      setImageFile({
+        name: file.name,
+        image: reader.result as string,
+      });
+    } else {
+      errMsg.value = "მხოლოდ ფოტოს ატვირთვა არის შესაძლებელი!";
+    }
   };
 
-  reader.readAsArrayBuffer(file);
+  reader.readAsDataURL(file);
 };
 
 const handleInputFile = ($event: Event) => {
@@ -79,12 +84,17 @@ const handleInputFile = ($event: Event) => {
         name: file.name,
         image: reader.result as string,
       });
-      toggleImageError(false);
     };
 
-    reader.readAsArrayBuffer(file);
+    reader.readAsDataURL(file);
   }
 };
 
 const handleRemoveImageFile = () => removeImageFile();
+
+watchEffect(() => {
+  if (imageFile.value.image) {
+    errMsg.value = "";
+  }
+});
 </script>

@@ -5,7 +5,13 @@
     </div>
     <h4 class="author">{{ blog.author }}</h4>
     <span class="date">{{ blog.publish_date }}</span>
-    <h2 class="title">{{ blog.title }}</h2>
+    <h2 class="title">
+      {{
+        blog.title?.length <= 64
+          ? blog.title
+          : blog.title?.substring(0, 64) + "..."
+      }}
+    </h2>
     <div class="card-categories">
       <div
         class="category"
@@ -19,7 +25,13 @@
         {{ category.title }}
       </div>
     </div>
-    <p class="description">{{ blog.description }}</p>
+    <p class="description">
+      {{
+        blog.description?.length <= 86
+          ? blog.description
+          : blog.description?.substring(0, 86) + "..."
+      }}
+    </p>
     <div class="link">
       <router-link :to="{ name: 'home' }">სრულად ნახვა</router-link>
       <ArrowIcon />

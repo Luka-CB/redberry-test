@@ -51,7 +51,6 @@ interface emailIFace {
 
 interface stateIFace {
   imageFile: imageFileIFace;
-  imageError: boolean;
   values: {
     author: authorIFace;
     title: titleIFace;
@@ -103,25 +102,27 @@ const values = {
   },
 };
 
+const imageFileFromStorage = localStorage.getItem("imageFile")
+  ? JSON.parse(localStorage.getItem("imageFile") || "")
+  : {};
+
 const formValuesFromStorage = localStorage.getItem("values")
   ? JSON.parse(localStorage.getItem("values") || "")
   : values;
 
 export const useForm = defineStore("form", {
   state: (): stateIFace => ({
-    imageFile: {},
-    imageError: false,
+    imageFile: imageFileFromStorage,
     values: formValuesFromStorage,
   }),
   actions: {
     setImageFile(file: imageFileIFace) {
       this.imageFile = file;
-    },
-    toggleImageError(value: boolean) {
-      this.imageError = value;
+      localStorage.setItem("imageFile", JSON.stringify(file));
     },
     removeImageFile() {
       this.imageFile = {};
+      localStorage.removeItem("imageFile");
     },
     setAuthor(vals: authorIFace) {
       this.values.author.value = vals.value;
@@ -174,6 +175,7 @@ export const useForm = defineStore("form", {
       this.values = values;
       this.imageFile = {};
       localStorage.removeItem("values");
+      localStorage.removeItem("imageFile");
     },
   },
 });

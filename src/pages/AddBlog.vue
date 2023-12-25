@@ -23,6 +23,7 @@ import { storeToRefs } from "pinia";
 import Spinner from "../components/Spinner.vue";
 import SuccessModal from "../components/SuccessModal.vue";
 import { useRouter } from "vue-router";
+import { useAuth } from "../store/auth";
 
 const router = useRouter();
 
@@ -37,7 +38,16 @@ const { toggleSuccessModal } = blogsStore;
 const formStore = useForm();
 const { resetForm } = formStore;
 
+const authStore = useAuth();
+const { isAuth } = storeToRefs(authStore);
+
 const handleCloseDropdown = () => toggleCategoryDropdown(false);
+
+watchEffect(() => {
+  if (!isAuth.value) {
+    router.push({ name: "home" });
+  }
+});
 
 watchEffect(() => {
   if (isPostBlogSuccess.value) {

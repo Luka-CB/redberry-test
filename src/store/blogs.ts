@@ -5,7 +5,7 @@ import { catIFace } from "./categories";
 interface blogIFace {
   title: string;
   description: string;
-  image: string;
+  image: string | ArrayBuffer | undefined;
   author: string;
   publish_date: string;
   categories: number[];
@@ -16,7 +16,7 @@ export interface getBlogIFace {
   id: number;
   title: string;
   description: string;
-  image: string;
+  image?: string;
   publish_date: string;
   categories: catIFace[];
   author: string;

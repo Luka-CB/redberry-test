@@ -31,7 +31,6 @@ import { useBlogs } from "../../store/blogs";
 
 const formStore = useForm();
 const { values, imageFile } = storeToRefs(formStore);
-const { toggleImageError } = formStore;
 
 const blogsStore = useBlogs();
 const { isPostBlogSuccess } = storeToRefs(blogsStore);
@@ -47,7 +46,8 @@ watchEffect(() => {
     values.value.title.success &&
     values.value.description.success &&
     values.value.date.success &&
-    values.value.categories.success
+    values.value.categories.success &&
+    imageFile.value.image
   ) {
     isDisabled.value = false;
   } else {
@@ -56,15 +56,22 @@ watchEffect(() => {
 });
 
 const handleSubmit = () => {
-  if (!imageFile.value.name) {
-    toggleImageError(true);
-    return;
+  const base64 = imageFile.value.image?.split("base64,")[1];
+
+  let arrayBuffer;
+
+  if (base64) {
+    const binary = atob(base64);
+    const len = binary.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) bytes[i] = binary.charCodeAt(i);
+    arrayBuffer = bytes.buffer;
   }
 
   const data = {
     title: values.value.title.value,
     description: values.value.description.value,
-    image: imageFile.value.image as string,
+    image: arrayBuffer,
     author: values.value.author.value,
     publish_date: values.value.date.value,
     categories: values.value.categories.value,
