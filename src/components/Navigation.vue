@@ -30,5 +30,8 @@ const handleHomeBtn = () => router.push({ name: "home" });
 const handleAddBtn = () => router.push({ name: "add" });
 
 const handleAuthBtn = () => toggleAuthModal(true);
-const handleLogout = () => logout();
+const handleLogout = () => {
+  logout();
+  router.push({ name: "home" });
+};
 </script>

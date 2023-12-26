@@ -40,7 +40,17 @@
 
   .cards-wrapper {
     width: 1288px;
+    min-height: 400px;
+    position: relative;
     margin: 0 auto;
+
+    .no-blog {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ea1919;
+    }
 
     .cards {
       margin: 64px 0 96px 0;

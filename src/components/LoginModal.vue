@@ -45,6 +45,7 @@ import { ref, watchEffect } from "vue";
 import { useAuth } from "../store/auth";
 import { storeToRefs } from "pinia";
 import Spinner from "./Spinner.vue";
+import router from "../router";
 
 const email = ref("");
 const emailError = ref("");
@@ -79,10 +80,14 @@ const handleSubmit = () => {
 const handleCloseModal = () => {
   if (isLoginSuccess.value) {
     acceptAuth();
+    router.push({ name: "home" });
   } else {
     toggleAuthModal(false);
   }
 };
 
-const handleCloseSuccessModal = () => acceptAuth();
+const handleCloseSuccessModal = () => {
+  acceptAuth();
+  router.push({ name: "home" });
+};
 </script>

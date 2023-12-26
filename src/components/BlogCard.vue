@@ -15,7 +15,7 @@
     <div class="card-categories">
       <div
         class="category"
-        v-for="category in blog.categories.slice(0, 3)"
+        v-for="category in blog.categories"
         :key="category.id"
         :style="{
           backgroundColor: category.background_color,
@@ -33,7 +33,9 @@
       }}
     </p>
     <div class="link">
-      <router-link :to="{ name: 'home' }">სრულად ნახვა</router-link>
+      <router-link :to="{ name: 'blog', params: { blogId: blog.id } }"
+        >სრულად ნახვა</router-link
+      >
       <ArrowIcon />
     </div>
   </div>

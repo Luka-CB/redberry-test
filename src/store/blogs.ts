@@ -20,6 +20,7 @@ export interface getBlogIFace {
   publish_date: string;
   categories: catIFace[];
   author: string;
+  email?: string;
 }
 
 interface stateIFace {
@@ -78,7 +79,12 @@ export const useBlogs = defineStore("blogs", {
 
         if (data) {
           this.isGetBlogsLoading = false;
-          this.blogs = data.data;
+
+          const newData = data.data.filter(
+            (blog: blogIFace) => new Date(blog.publish_date) <= new Date()
+          );
+
+          this.blogs = newData;
         }
       } catch (error) {
         this.isGetBlogsLoading = false;

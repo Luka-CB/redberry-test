@@ -24,6 +24,12 @@
     </section>
     <section class="cards-wrapper">
       <Spinner v-if="isGetBlogsLoading" />
+      <p
+        class="no-blog"
+        v-if="categoryIdsForFilter.length > 0 && filteredBlogs.length === 0"
+      >
+        ბლოგი არ მოიძებნა!
+      </p>
       <div class="cards">
         <BlogCard
           v-for="blog in categoryIdsForFilter.length > 0 ||

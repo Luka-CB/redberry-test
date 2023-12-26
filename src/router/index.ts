@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import Home from "../pages/Home.vue";
 import AddBlog from "../pages/AddBlog.vue";
+import Blog from "../pages/Blog.vue";
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: "/add",
     name: "add",
     component: AddBlog,
+  },
+  {
+    path: "/blog/:blogId",
+    name: "blog",
+    component: Blog,
   },
 ];
 

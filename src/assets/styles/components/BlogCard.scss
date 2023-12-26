@@ -37,11 +37,18 @@
     margin-top: 16px;
     display: flex;
     align-items: center;
+    width: 408px;
+    overflow-x: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
     .category {
       font-size: 12px;
       padding: 6px 10px;
       border-radius: 30px;
+      text-wrap: nowrap;
 
       &:not(:first-child) {
         margin-left: 10px;
