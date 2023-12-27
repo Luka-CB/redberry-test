@@ -32,7 +32,7 @@
           : blog.description?.substring(0, 86) + "..."
       }}
     </p>
-    <div class="link">
+    <div class="link" @click="handleLink">
       <router-link :to="{ name: 'blog', params: { blogId: blog.id } }"
         >სრულად ნახვა</router-link
       >
@@ -42,8 +42,19 @@
 </template>
 
 <script setup lang="ts">
+// import { computed } from "vue";
+import { RouteRecordName } from "vue-router";
 import ArrowIcon from "../components/svgs/ArrowIcon.vue";
 import { getBlogIFace } from "../store/blogs";
 
-const { blog } = defineProps<{ blog: getBlogIFace }>();
+const { routeName, blog } = defineProps<{
+  routeName: string | RouteRecordName | null | undefined;
+  blog: getBlogIFace;
+}>();
+
+const handleLink = () => {
+  if (routeName === "blog") {
+    window.location.reload();
+  }
+};
 </script>

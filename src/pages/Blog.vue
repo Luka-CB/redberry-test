@@ -1,10 +1,10 @@
 <template>
   <main class="blog-container">
-    <Spinner v-if="isGetBlogLoading" />
+    <Spinner v-if="!blog.id && isGetBlogLoading" />
     <div class="back-btn" @click="handleBackBtn">
       <ChevronLeftIcon />
     </div>
-    <div class="blog">
+    <div class="blog" v-if="blog.id">
       <div class="image">
         <img :src="blog.image" :alt="blog.title" />
       </div>
@@ -30,16 +30,19 @@
       </div>
       <p class="description">{{ blog.description }}</p>
     </div>
+    <Slider v-if="blog.id" />
   </main>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, watchEffect } from "vue";
 import { storeToRefs } from "pinia";
 import { useBlog } from "../store/blog";
 import { useRoute, useRouter } from "vue-router";
 import Spinner from "../components/Spinner.vue";
 import ChevronLeftIcon from "../components/svgs/ChevronLeftIcon.vue";
+import Slider from "../components/Slider.vue";
+import { useBlogs } from "../store/blogs";
 
 const route = useRoute();
 const router = useRouter();
@@ -48,9 +51,28 @@ const blogStore = useBlog();
 const { isGetBlogLoading, blog } = storeToRefs(blogStore);
 const { getBlog } = blogStore;
 
+const blogsStore = useBlogs();
+const { getBlogs, getSimilarBlogs } = blogsStore;
+
 const blogId = computed(() => route.params.blogId);
 
-getBlog(+blogId.value);
+window.scrollTo({
+  top: 0,
+  behavior: "smooth",
+});
 
-const handleBackBtn = () => router.go(-1);
+watchEffect(() => {
+  if (blogId.value) {
+    getBlog(+blogId.value);
+    getBlogs();
+  }
+});
+
+watchEffect(() => {
+  if (blog.value.id) {
+    getSimilarBlogs(blog?.value?.id, blog?.value?.categories);
+  }
+});
+
+const handleBackBtn = () => router.push({ name: "home" });
 </script>

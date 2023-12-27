@@ -31,6 +31,7 @@ interface stateIFace {
   blogs: getBlogIFace[];
   categoryIdsForFilter: number[];
   filteredBlogs: getBlogIFace[];
+  similarBlogs: getBlogIFace[];
 }
 
 const categoryFilterIdsFromStorage = localStorage.getItem("categoryFilterIds")
@@ -46,6 +47,7 @@ export const useBlogs = defineStore("blogs", {
     blogs: [],
     categoryIdsForFilter: categoryFilterIdsFromStorage,
     filteredBlogs: [],
+    similarBlogs: [],
   }),
   actions: {
     toggleSuccessModal(value: boolean) {
@@ -127,6 +129,14 @@ export const useBlogs = defineStore("blogs", {
     removeFilter() {
       this.categoryIdsForFilter = [];
       localStorage.removeItem("categoryFilterIds");
+    },
+
+    getSimilarBlogs(blogId: number, categories: catIFace[]) {
+      const catIds = categories.map((cat) => cat.id);
+      const filteredBlogs = this.filterBlogs(catIds).filter(
+        (blog) => blog.id !== blogId
+      );
+      this.similarBlogs = filteredBlogs;
     },
 
     resetPostBlog() {

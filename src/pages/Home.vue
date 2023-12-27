@@ -23,7 +23,7 @@
       </div>
     </section>
     <section class="cards-wrapper">
-      <Spinner v-if="isGetBlogsLoading" />
+      <Spinner v-if="blogs.length === 0 && isGetBlogsLoading" />
       <p
         class="no-blog"
         v-if="categoryIdsForFilter.length > 0 && filteredBlogs.length === 0"
@@ -38,6 +38,7 @@
             : blogs"
           :key="blog.id"
           :blog="blog"
+          :routeName="route.name"
         />
       </div>
     </section>

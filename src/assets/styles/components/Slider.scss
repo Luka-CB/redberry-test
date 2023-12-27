@@ -1,0 +1,60 @@
+$sliderWidth: calc(408px * 3 + 32px * 2);
+
+.slider-wrapper {
+  margin-top: 98px;
+  padding-bottom: 475px;
+  width: $sliderWidth;
+  margin: 0 auto;
+  scroll-snap-type: inline mandatory;
+
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .title {
+      color: #1a1a1f;
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .btns {
+      display: flex;
+      align-items: center;
+
+      .left,
+      .right {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:disabled {
+          background-color: #dadada;
+          cursor: default;
+        }
+      }
+
+      .left {
+        margin-right: 24px;
+      }
+    }
+  }
+
+  .slider {
+    margin-top: 40px;
+    width: $sliderWidth;
+    display: grid;
+    grid-auto-flow: column;
+    overflow-x: hidden;
+    gap: 0 32px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    @import "./BlogCard";
+  }
+}
