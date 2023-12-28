@@ -3,5 +3,8 @@ import "./assets/styles/index.scss";
 import App from "./App.vue";
 import { createPinia } from "pinia";
 import router from "./router";
+import { createHead } from "@vueuse/head";
 
-createApp(App).use(router).use(createPinia()).mount("#app");
+const head = createHead();
+
+createApp(App).use(head).use(router).use(createPinia()).mount("#app");

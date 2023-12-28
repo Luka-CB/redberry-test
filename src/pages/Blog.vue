@@ -43,6 +43,7 @@ import Spinner from "../components/Spinner.vue";
 import ChevronLeftIcon from "../components/svgs/ChevronLeftIcon.vue";
 import Slider from "../components/Slider.vue";
 import { useBlogs } from "../store/blogs";
+import { useHead } from "@vueuse/head";
 
 const route = useRoute();
 const router = useRouter();
@@ -75,4 +76,8 @@ watchEffect(() => {
 });
 
 const handleBackBtn = () => router.push({ name: "home" });
+
+useHead({
+  title: computed(() => blog.value?.title),
+});
 </script>
