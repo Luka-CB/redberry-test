@@ -26,7 +26,10 @@
       <Spinner v-if="blogs.length === 0 && isGetBlogsLoading" />
       <p
         class="no-blog"
-        v-if="categoryIdsForFilter.length > 0 && filteredBlogs.length === 0"
+        v-if="
+          (categoryIdsForFilter.length > 0 && filteredBlogs.length === 0) ||
+          blogs.length === 0
+        "
       >
         ბლოგი არ მოიძებნა!
       </p>
