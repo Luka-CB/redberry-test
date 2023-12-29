@@ -24,6 +24,7 @@ import Spinner from "../components/Spinner.vue";
 import SuccessModal from "../components/SuccessModal.vue";
 import { useRouter } from "vue-router";
 import { useAuth } from "../store/auth";
+import { useHead } from "@vueuse/head";
 
 const router = useRouter();
 
@@ -58,4 +59,8 @@ watchEffect(() => {
 });
 
 const handleBackBtn = () => router.push({ name: "home" });
+
+useHead({
+  title: "დაამატე ბლოგი",
+});
 </script>

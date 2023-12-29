@@ -47,7 +47,7 @@ watchEffect(() => {
   }
 });
 
-const minFourSymbols = /^\S.{3,}(?:\s\S.{1,})*$/;
+const minFourSymbols = /^\S.{3,}[\s\S]+$/;
 
 watchEffect(() => {
   if (description.value && !minFourSymbols.test(description.value)) {

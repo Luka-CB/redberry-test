@@ -70,6 +70,10 @@
       width: 720px;
       overflow-x: auto;
 
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
       .category {
         font-size: 12px;
         padding: 6px 10px;
