@@ -13,7 +13,10 @@
         <button
           class="right"
           @click="handleRightBtn"
-          :disabled="sliderCount === (similarBlogs.length - 3) * cardWidth"
+          :disabled="
+            similarBlogs.length <= 3 ||
+            sliderCount === (similarBlogs.length - 3) * cardWidth
+          "
         >
           <ChevronRightIcon />
         </button>
